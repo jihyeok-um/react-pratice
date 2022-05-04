@@ -1,30 +1,36 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable prefer-template */
+/* eslint-disable react/prop-types */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import React, { useRef, forwardRef } from 'react';
+import { createContext, useContext, useState } from 'react';
 
-function Test() {
-  return <MyForm />;
+const ThemeContext = createContext('test');
+
+export default function MyApp() {
+  const [theme, setTheme] = useState('dark');
+
+  const handleClick = () => {
+    if (theme === 'dark') {
+      setTheme('light');
+      return;
+    }
+    setTheme('dark');
+  };
+
+  return <Button onClick={handleClick} />;
 }
 
-const MyInput = forwardRef((props, ref) => {
-  return <input {...props} ref={ref} />;
-});
-
-function MyForm() {
-  const inputRef = useRef(null);
-
-  function handleClick() {
-    inputRef.current.focus();
-  }
-
+function Button({ onClick }) {
+  const buttonTheme = useContext(ThemeContext);
+  const className = 'button-' + buttonTheme;
   return (
-    <>
-      <MyInput ref={inputRef} />
-      <button onClick={handleClick}>Focus the input</button>
-    </>
+    <button className={className} onClick={onClick}>
+      change Theme
+    </button>
   );
 }
-
-export default Test;
